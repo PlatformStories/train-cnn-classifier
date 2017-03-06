@@ -1,0 +1,149 @@
+{
+    "name": "train-cnn-classifier",
+    "description": "Train a convolutional neural network to classify polygons from input image",
+    "properties": {
+        "isPublic": true,
+        "timeout": 172800
+    },
+    "inputPortDescriptors": [
+        {
+            "name": "images",
+            "type": "directory",
+            "description": "Contains GeoTiff image strip(s) from which to extract training polygons in geojson. The strips must be named after their catalog ids (ex- 1040010014BCA700.tif). Up to five image strips will be accepted as input.",
+            "required": true
+        },
+        {
+            "name": "geojson",
+            "type": "directory",
+            "description": "Contains one geojson file with labeled training polygons. Each polygon should have an 'image_id' property containing the catalog id of the associated image strip, and a 'class_name' property with the appropriate training classifiction of the polygon.",
+            "required": true
+        },
+        {
+            "name": "classes",
+            "type": "string",
+            "description": "String: classes to train network on, each separated by a comma (e.g- 'No swimming pool, Swimming pool'). Must be exactly as they appear in the class_name property of the polygon feature in the geojson.",
+            "required": true
+        },
+        {
+            "name": "two_rounds",
+            "type": "string",
+            "description": "Bool: train the network in two rounds- first on balanced classes then on the original distribution of classes. In the second training round only the weights of the final layer of the model will be updated. Recommended if there is class imbalance in the dataset. Defaults to True.",
+            "required": false
+        },
+        {
+            "name": "filter_geojson",
+            "type": "string",
+            "description": "Bool: remove any polygons that are larger than max_side_dim or smaller than min_side_dim from geojson. This is highly recommended as errors in training may occur if any polygons will be larger than the max_side_dim or smaller than min_side_dim. Defaults to True.",
+            "required": false
+        },
+        {
+            "name": "min_side_dim",
+            "type": "string",
+            "description": "Int: the minimum acceptable side dimension (in pixels) for training polygons. Defaults to 10.",
+            "required": false
+        },
+        {
+            "name": "max_side_dim",
+            "type": "string",
+            "description": "Int: the maximum acceptable side dimension (in pixels) for training polygons. Defaults to 125.",
+            "required": false
+        },
+        {
+            "name": "train_size",
+            "type": "string",
+            "description": "Int: number of polygons to train the network on for the first round of training. Defaults to 10000.",
+            "required": false
+        },
+        {
+            "name": "batch_size",
+            "type": "string",
+            "description": "Int: number of chips to train on per batch. Defaults to 32.",
+            "required": false
+        },
+        {
+            "name": "nb_epoch",
+            "type": "string",
+            "description": "Int: number of training epochs to perform for the first round of training. Defualts to 35.",
+            "required": false
+        },
+        {
+            "name": "nb_epoch_2",
+            "type": "string",
+            "description": "Int: Number of training epochs to perform for the second round of training. Only relevant if two_rounds is True. Defaults to 8.",
+            "required": false
+        },
+        {
+            "name": "train_size_2",
+            "type": "string",
+            "description": "Int: number of polygons to train on in the second round of training. Only relevant if two_rounds is True. Defualts to half of train size.",
+            "required": false
+        },
+        {
+            "name": "test",
+            "type": "string",
+            "description": "Bool: if True testing will be completed on a subset of polygons. A test report with accuracy metrics will be saved as a text file in the 'model' output directory. Defaults to True.",
+            "required": false
+        },
+        {
+            "name": "test_size",
+            "type": "string",
+            "description": "Int: number of chips to test on. Only relevant if test is 'True'. Defualts to 5000.",
+            "required": false
+        },
+        {
+            "name": "learning_rate",
+            "type": "string",
+            "description": "Int: Learning rate for the first round of training. defaults to 0.001",
+            "required": false
+        },
+        {
+            "name": "learning_rate_2",
+            "type": "string",
+            "description": "Int: Learning rate for the second round of training (if applicable). defaults to 0.001",
+            "required": false
+        },
+        {
+            "name": "bit_depth",
+            "type": "string",
+            "description": "Int: bit depth of the image strips in images. This parameter is necessary for proper normalization. Defaults to 8."
+        },
+        {
+            "name": "kernel_size",
+            "type": "string",
+            "description": "Int: Side dimension (in pixels) of the kernels at each convolutional layer in the network. Defaults to 3."
+        },
+        {
+            "name": "small_model",
+            "type": "string",
+            "description": "Bool: Use a model with 8 layers instead of 16. Useful for large input images (>250 pixels). Defaults to False."
+        },
+        {
+            "name": "resize_dim",
+            "type": "string",
+            "description": "Tuple(ints): Dimensions to resize the chips to after padding. This should be smaller than the original dimension and have order (n_channels, side_dim, side_dim). Defaults to None."
+        },
+        {
+            "name": "use_lowest_val_loss",
+            "type": "string",
+            "description": "Bool: After the first round of training use the model weights that yielded the lowest validation loss (recommended). Otherwise the model weights after the final epoch will be used. Defaults to True."
+        }
+    ],
+    "outputPortDescriptors": [
+        {
+            "name": "trained_model",
+            "type": "directory",
+            "description": "The fully trained model with the architecture stored as model_arch.json and weights as model_weights.h5. Model weights after all epochs will be saved in a directory called model_weights, with the format epoch{n}_{validation_loss}.h5, where n is the epoch that produced the weights. This directory will also contain a test report, which will only have accuracy metrics if train is True."
+        }
+    ],
+    "containerDescriptors": [
+        {
+            "type": "DOCKER",
+            "properties": {
+                "image": "naldeborgh/train-cnn-classifier",
+                "domain": "nvidiagpu"
+            },
+            "command": "python /train-cnn-classifier.py",
+            "isPublic": true
+        }
+    ]
+}

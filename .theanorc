@@ -1,0 +1,16 @@
+[global]
+floatX = float32
+device = gpu
+optimizer = fast_run
+
+[lib]
+cnmem = 0.9
+
+[nvcc]
+fastmath = True
+
+[blas]
+ldflags = -llapack -lblas
+
+[cuda]
+root = /usr/local/cuda
