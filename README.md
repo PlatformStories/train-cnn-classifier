@@ -2,7 +2,7 @@
 
 Takes a GeoTiff image and labeled training polygons in a geojson file and produces a trained Convolutional Neural Network (CNN) classifier. The network architecture is [VGG Net](https://arxiv.org/pdf/1409.1556.pdf), which was developed as part of the [2014 ImageNet](http://www.image-net.org/challenges/LSVRC/2014/) challenge. See [here](https://github.com/DigitalGlobe/mltools/tree/master/examples/polygon_classify_cnn) for an example of a specific implementation of this network.
 
-<img src='images/train_cnn_classifier.png' width=400>
+<img src='images/train_cnn_classifier.png' width=600>
 
 ## Run
 
@@ -120,7 +120,7 @@ The two_rounds flag is a method for dealing with data that has natural class imb
 1. Train the network on balanced data (the task will take care of creating a balanced training dataset).  
 2. Retrain the network on the original class distribution to account for the probability of encountering a given image class. This round will only update the weights to the output layer of the network.
 
-    <img src='images/training_scheme.png' width=400>
+<img src='images/training_scheme.png' width=400>
 
 This two-round training process allows the network to learn to distinguish between classes based on distinct features (round one) and then learn the probability of encountering each class (round two). This is highly recommended for data that is not balanced.
 
