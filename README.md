@@ -116,7 +116,7 @@ Below are more details on the optional hyper-parameter settings
 
 #### two_rounds  
 
-The two_rounds flag is a method for dealing with data that has natural class imbalance (unequal representation of image classes). Training a CNN on data with unbalanced classes often results in the network classifying all target data under the majority class. two_rounds avoids this by training in the following steps:
+The two_rounds flag is a method for dealing with data that has natural class imbalance (unequal representation of image classes). Training a CNN on data with unbalanced classes often results in the network classifying all target data under the majority class. two_rounds avoids this by training in the following steps:  
 1. Train the network on balanced data (the task will take care of creating a balanced training dataset).  
 2. Retrain the network on the original class distribution to account for the probability of encountering a given image class. This round will only update the weights to the output layer of the network.
 
