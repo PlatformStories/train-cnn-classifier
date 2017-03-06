@@ -6,15 +6,14 @@ Takes a GeoTiff image and labeled training polygons in a geojson file and produc
 
 ## Run
 
-Here we execute an example in which a classifier is trained to find property polygons with pools. Our training data includes a geojson and GeoTiff image, each of which are on S3. Each polygon in the geojson has a class_name property that is either 'Swimming pool' or 'No swimming pool'.
+Here we execute an example in which a classifier is trained to find property polygons with pools. Training data is provided in the specified S3 location.
 
 1. Within an iPython terminal create a GBDX interface an specify the task input location:
 
     ```python
     from gbdxtools import Interface
     from os.path import join
-    import random
-    import string
+    import uuid
 
     gbdx = Interface()
 
@@ -33,13 +32,13 @@ Here we execute an example in which a classifier is trained to find property pol
 3. Set any optional hyper-parameters if necessary. With the following parameters training should take about three hours to complete:
 
     ```python
+    train_task.inputs.two_rounds = 'True'
     train_task.inputs.nb_epoch = '30'
     train_task.inputs.nb_epoch_2 = '5'
     train_task.inputs.train_size = '4500'
     train_task.inputs.train_size_2 = '2500'
     train_task.inputs.test_size = '1000'
     train_task.inputs.bit_depth = '8'
-    train_task.inputs.two_rounds = 'True'
     ```
 
 4. Initialize a workflow and specify where to save the output:
@@ -65,7 +64,7 @@ Here we execute an example in which a classifier is trained to find property pol
     ```
 
 
-## Inputs
+## Input Ports
 
 The task input ports. Note that booleans, integers and floats **must be** passed to the task as strings, e.g., 'True', '10', '0.001'.
 
@@ -94,7 +93,7 @@ The task input ports. Note that booleans, integers and floats **must be** passed
 | [small model] | False | Bool | Use a model with 8 layers instead of 16. Useful for large input images (>250 pixels). |
 
 
-## Outputs  
+## Output Ports
 
 train-cnn-classifier has one output directory port, trained_model. Its contents are listed in the following table:
 
@@ -182,3 +181,70 @@ Each convolutional layer of a CNN uses kernels to extract features from the inpu
 #### resize_dim
 
 There may be memory errors when the input chips are too large (over 200px). This argument will downsample the input images to the input dimensions. Input should be as follows: (n_bands, rows, cols). The value of n_bands should be equal to the number of bands of the input imagery since only the side dimensions will be updated.
+
+## Development
+
+### Build the Docker Image
+
+You need to install [Docker](https://docs.docker.com/engine/installation/).
+
+Clone the repository:
+
+```bash
+git clone https://github.com/platformstories/train-cnn-chip-classifier
+```
+
+Then:
+
+```bash
+cd train-cnn-classifier
+docker build -t train-cnn-classifier .
+```
+
+### Try out locally
+
+Create a container in interactive mode and mount the sample input under `/mnt/work/input/`:
+
+```bash
+docker run -v full/path/to/sample-input:/mnt/work/input -it train-cnn-classifier
+```
+
+Then, within the container:
+
+```bash
+python /train-cnn-classifier.py
+```
+
+Watch the stdout to confirm that the model is being trained.
+
+
+### Docker Hub
+
+Login to Docker Hub:
+```bash
+docker login
+```
+
+Tag your image using your username and push it to DockerHub:
+
+```bash
+docker tag train-cnn-classifier yourusername/train-cnn-classifier
+docker push yourusername/train-cnn-classifier
+```
+
+The image name should be the same as the image name under containerDescriptors in train-cnn-classifier.json.
+
+Alternatively, you can link this repository to a [Docker automated build](https://docs.docker.com/docker-hub/builds/). Every time you push a change to the repository, the Docker image gets automatically updated.
+
+
+### Register on GBDX
+
+In a Python terminal:
+
+```python
+from gbdxtools import Interface
+gbdx = Interface()
+gbdx.task_registry.register(json_filename='train-cnn-classifier.json')
+```
+
+Note: If you change the task image, you need to reregister the task with a higher version number in order for the new image to take effect. Keep this in mind especially if you use Docker automated build.
