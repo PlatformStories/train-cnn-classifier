@@ -17,7 +17,7 @@ Here we execute an example in which a classifier is trained to find property pol
 
     gbdx = Interface()
 
-    input_location = 's3://gbd-customer-data/58600248-2927-4523-b44b-5fec3d278c09/platform-stories/swimming-pools'
+    input_location = 's3://gbd-customer-data/58600248-2927-4523-b44b-5fec3d278c09/platform-stories/train-cnn-classifier'
     ```
 
 2. Create a task instance and set the required inputs:  
@@ -193,7 +193,7 @@ You need to install [Docker](https://docs.docker.com/engine/installation/).
 Clone the repository:
 
 ```bash
-git clone https://github.com/platformstories/train-cnn-chip-classifier
+git clone https://github.com/platformstories/train-cnn-classifier
 ```
 
 Then:
