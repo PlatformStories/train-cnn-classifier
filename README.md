@@ -25,7 +25,7 @@ Here we execute an example in which a classifier is trained to find property pol
     ```python
     train_task = gbdx.Task('train-cnn-classifier')
     train_task.inputs.images = join(input_location, 'images')
-    train_task.inputs.geojson = join(input_location, 'train_geojson')
+    train_task.inputs.geojson = join(input_location, 'geojson')
     train_task.inputs.classes = 'No swimming pool, Swimming pool'
     ```
 
