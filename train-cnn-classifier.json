@@ -1,5 +1,6 @@
 {
     "name": "train-cnn-classifier",
+    "version": "0.0.2",
     "description": "Train a convolutional neural network to classify polygons from input image",
     "properties": {
         "isPublic": true,
@@ -139,7 +140,7 @@
         {
             "type": "DOCKER",
             "properties": {
-                "image": "naldeborgh/train-cnn-classifier",
+                "image": "platformstories/train-cnn-classifier",
                 "domain": "nvidiagpu"
             },
             "command": "python /train-cnn-classifier.py",
