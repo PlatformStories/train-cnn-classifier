@@ -2,7 +2,7 @@ import os, time, ast, shutil
 import json, geojson, geoio
 import numpy as np
 import subprocess
-from pool_net import PoolNet
+from net import VggNet
 from mltools import geojson_tools as gt
 from mltools import data_extractors as de
 from gbdx_task_interface import GbdxTaskInterface
@@ -251,11 +251,11 @@ class TrainCnnClassifier(GbdxTaskInterface):
         inp = self.prep_geojsons('orig_geojson.geojson')
 
         # Training round 1
-        p = PoolNet(classes=self.classes, batch_size=self.batch_size,
+        net = VggNet(classes=self.classes, batch_size=self.batch_size,
                     input_shape=input_shape, learning_rate=self.lr_1,
                     kernel_size=self.kernel_size, small_model=self.small_model)
 
-        p, hist = self.fit_model(model=p, inp_geojson=inp, rnd=1, input_shape=input_shape)
+        net, hist = self.fit_model(model=net, inp_geojson=inp, rnd=1, input_shape=input_shape)
 
         # Find lowest val_loss, load weights
         if self.use_lowest_val_loss:
@@ -263,7 +263,7 @@ class TrainCnnClassifier(GbdxTaskInterface):
             min_epoch = np.argmin(val_losses)
             min_loss = val_losses[min_epoch]
             min_weights = 'models/epoch' + str(min_epoch) + '_{0:.2f}.h5'.format(min_loss)
-            p.model.load_weights(min_weights)
+            net.model.load_weights(min_weights)
 
         # Training round 2
         if self.two_rounds:
@@ -272,7 +272,7 @@ class TrainCnnClassifier(GbdxTaskInterface):
             for mod in mod_list:
                 os.remove(os.path.join('models', mod))
 
-            p, _ = self.fit_model(model=p, inp_geojson='train_filtered.geojson', rnd=2,
+            net, _ = self.fit_model(model=net, inp_geojson='train_filtered.geojson', rnd=2,
                                   input_shape=input_shape, retrain=True,
                                   learning_rate_2 = self.lr_2)
 
@@ -282,8 +282,8 @@ class TrainCnnClassifier(GbdxTaskInterface):
 
         # Save model architecture and weights to output directory
         os.chdir(self.trained_model)
-        json_str = p.model.to_json()
-        p.model.save_weights('model_weights.h5')
+        json_str = net.model.to_json()
+        net.model.save_weights('model_weights.h5')
         with open('model_architecture.json', 'w') as arch:
             json.dump(json_str, arch)
 
