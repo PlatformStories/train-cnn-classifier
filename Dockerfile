@@ -32,7 +32,8 @@ RUN apt-get -y update && apt-get -y \
     vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install Theano Keras h5py geojson sklearn gdal numpy
+RUN pip install Theano Keras h5py geojson sklearn gdal numpy geojsontools
+dataextractors
 
 ADD ./bin /
 COPY .theanorc /root/.theanorc
