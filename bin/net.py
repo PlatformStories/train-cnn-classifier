@@ -3,9 +3,9 @@
 import numpy as np
 import os, random
 import json, geojson
-import geojson_tools as gt
 
-from data_extractors import get_data_from_polygon_list as get_chips
+from mltools import geojsontools as gt
+from mltools.dataextractors import get_data_from_polygon_list as get_chips
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.models import Sequential, model_from_json
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
@@ -13,7 +13,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.optimizers import SGD
 
 
-class Net(object):
+class VggNet(object):
     '''
     Convolutional Neural Network model to train and deploy on geojsons + DG imagery
 

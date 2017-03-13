@@ -27,11 +27,13 @@ RUN apt-get -y update && apt-get -y \
     libspatialite-dev \
     libhdf4-alt-dev \
     libhdf5-serial-dev \
+    git \
     wget \
     vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install Theano Keras h5py geojson sklearn gdal numpy geojsontools dataextractors
+RUN pip install gdal numpy ephem psycopg2 h5py theano geojson sklearn keras
+RUN pip install git+https://github.com/DigitalGlobe/mltools
 
 ADD ./bin /
 COPY .theanorc /root/.theanorc
