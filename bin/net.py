@@ -4,8 +4,8 @@ import numpy as np
 import os, random
 import json, geojson
 
-from mltools import geojsontools as gt
-from mltools.dataextractors import get_data_from_polygon_list as get_chips
+from mltools import geojson_tools as gt
+from mltools.data_extractors import get_data_from_polygon_list as get_chips
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.models import Sequential, model_from_json
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D

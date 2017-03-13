@@ -278,7 +278,7 @@ class TrainCnnClassifier(GbdxTaskInterface):
 
         # Test network
         if self.test:
-            self.test_net(model=p)
+            self.test_net(model=net)
 
         # Save model architecture and weights to output directory
         os.chdir(self.trained_model)
