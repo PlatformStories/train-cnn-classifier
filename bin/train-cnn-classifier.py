@@ -2,9 +2,9 @@ import os, time, ast, shutil
 import json, geojson, geoio
 import numpy as np
 import subprocess
+import geojsontools as gt
+import dataextractors as de
 from net import VggNet
-from mltools import geojson_tools as gt
-from mltools import data_extractors as de
 from gbdx_task_interface import GbdxTaskInterface
 
 

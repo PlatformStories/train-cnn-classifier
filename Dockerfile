@@ -32,8 +32,7 @@ RUN apt-get -y update && apt-get -y \
     vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install gdal numpy ephem psycopg2 h5py theano geojson sklearn keras
-RUN pip install git+https://github.com/DigitalGlobe/mltools
+RUN pip install gdal numpy ephem h5py theano geojson sklearn keras==1.2.2 dataextractors geojsontools
 
 ADD ./bin /
 COPY .theanorc /root/.theanorc
