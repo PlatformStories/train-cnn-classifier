@@ -124,7 +124,7 @@ class TrainCnnClassifier(GbdxTaskInterface):
         '''
         # Filter geojson
         if self.filter_geojson:
-            gt.filter_polygon_size(geoj, output_file = 'filtered_geojson.geojson',
+            de.filter_polygon_size(geoj, output_file = 'filtered_geojson.geojson',
                                    min_side_dim = self.min_side_dim,
                                    max_side_dim = self.max_side_dim)
             geoj = 'filtered_geojson.geojson'
