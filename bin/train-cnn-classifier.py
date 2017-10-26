@@ -243,7 +243,7 @@ class TrainCnnClassifier(GbdxTaskInterface):
 
         # Determine input shape
         if self.resize_dim:
-            input_shape = self.resize_dim
+            input_shape = [self.bands, self.resize_dim, self.resize_dim]
         else:
             input_shape = [self.bands, self.max_side_dim, self.max_side_dim]
 
