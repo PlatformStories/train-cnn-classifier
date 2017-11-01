@@ -121,7 +121,7 @@
         {
             "name": "resize_dim",
             "type": "string",
-            "description": "Tuple(ints): Dimensions to resize the chips to after padding. This should be smaller than the original dimension and have order (n_channels, side_dim, side_dim). Defaults to None."
+            "description": "Int: Dimension to resize the chips side dimension to after padding. This should be smaller than max_side_dim. Defaults to None."
         },
         {
             "name": "use_lowest_val_loss",
