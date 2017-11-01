@@ -89,7 +89,7 @@ The task input ports. Note that booleans, integers and floats **must be** passed
 | [bit_depth](#bit_depth)  | 8 | integer > 0 | Bit depth of the image strips in images. This parameter is necessary for proper normalization. |
 | [use_lowest_val_loss](#use_lowest_val_loss)  | True | True, False | After the first round of training use the model weights that yielded the lowest validation loss (recommended). Otherwise the model weights after the final epoch will be used. |
 | [kernel_size](#kernel_size) | 3 | integer > 1 | Side dimension (in pixels) of the kernels at each convolutional layer in the network. |
-| [resize_dim](#resize_dim) | None | tuple (n_bands, rows < max_side_dim, cols < max_side_dim) | Dimensions to resize the chips to after padding. This should be smaller than the original dimension and have order (n_channels, side_dim, side_dim). |
+| [resize_dim](#resize_dim) | None | int (< max_side_dim) | Dimension to resize the chip side to after padding. This should be smaller than max_side_dim. |
 | [small model] | False | Bool | Use a model with 8 layers instead of 16. Useful for large input images (>250 pixels). |
 
 
