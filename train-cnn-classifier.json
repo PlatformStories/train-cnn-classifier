@@ -1,6 +1,6 @@
 {
     "name": "train-cnn-classifier",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Train a convolutional neural network to classify polygons from input image",
     "properties": {
         "isPublic": true,
