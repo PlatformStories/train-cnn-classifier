@@ -201,7 +201,7 @@ class TrainCnnClassifier(GbdxTaskInterface):
                                                  max_side_dim = self.max_side_dim,
                                                  classes=self.classes,
                                                  bit_depth=self.bit_depth,
-                                                 resize_dim=self.resize_dim)
+                                                 resize_dim=None if not self.resize_dim else [self.bands, self.resize_dim, self.resize_dim])
 
             y_pred += list(model.model.predict_classes(x))
             y_true += [int(clss[1]) for clss in y]
